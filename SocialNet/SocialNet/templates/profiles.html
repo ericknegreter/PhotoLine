@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+ 
+{% block content %}
+    <div class="panel right">
+        <h1>Haz una publicaci&oacute;n: </h1>
+        <p>
+            <form action="/submit" method="post">
+            {% for field in ribbit_form %}{% csrf_token %}
+            {{ field }}
+            {% endfor %}
+            <input type="hidden" value="{{ next_url }}" name="next_url">
+            <input type="submit" value="Publicar">
+            </form>
+        </p>
+    </div>
+    <div class="panel left">
+        <h1>Perfiles</h1>
+        {% for user, post in obj %}
+        <div class="postWrapper">
+            <a href="/users/{{ user.username }}">
+                <img class="avatar" src="{{ user.profile.gravatar_url }}">
+                <span class="name">{{ user.first_name }}</span>
+            </a>
+            @{{ user.username }}
+            <p>
+                {{ user.post_count}} Publicaciones
+                <span class="spacing">{{ user.profile.followed_by.count }} Seguidores</span>
+                <span class="spacing">{{ user.profile.follows.count }} Siguiendo</span>
+            </p>
+            <p>{{ p.content }}</p>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}
